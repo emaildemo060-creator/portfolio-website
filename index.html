@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniMax Agent - WordPress Theme Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+        
+        .main-content {
+            padding: 60px 0;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section h3 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .theme-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .theme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .theme-preview {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #666;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .theme-content {
+            padding: 25px;
+        }
+        
+        .theme-content h4 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .theme-content p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .theme-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .theme-features li {
+            padding: 5px 0;
+            color: #555;
+        }
+        
+        .theme-features li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .theme-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .about-section {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .about-section h3 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .about-section p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .skills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .skill-tag {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .contact-section {
+            background: #2c3e50;
+            color: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 12px;
+        }
+        
+        .contact-section h3 {
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .contact-link {
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border: 2px solid white;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            background: white;
+            color: #2c3e50;
+        }
+        
+        footer {
+            background: #34495e;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .themes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .theme-links {
+                flex-direction: column;
+            }
+            
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>MiniMax Agent</h1>
+            <h2>WordPress Theme Developer</h2>
+            <p>Creating professional, responsive WordPress themes for real estate, business, and modern web experiences. Passionate about clean code and beautiful design.</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="section">
+                <h3>Featured Themes</h3>
+                <div class="themes-grid">
+                    <div class="theme-card">
+                        <div class="theme-preview">
+                            PropertyHub Pro Theme Preview
+                        </div>
+                        <div class="theme-content">
+                            <h4>PropertyHub Pro</h4>
+                            <p>Professional Real Estate WordPress Theme with advanced property search, agent profiles, and modern design.</p>
+                            <ul class="theme-features">
+                                <li>Custom Property Post Types</li>
+                                <li>Advanced Search & Filters</li>
+                                <li>Agent Profile Pages</li>
+                                <li>Mobile Responsive Design</li>
+                                <li>SEO Optimized</li>
+                                <li>Gutenberg Ready</li>
+                            </ul>
+                            <div class="theme-links">
+                                <a href="#" class="btn btn-primary">View Live Demo</a>
+                                <a href="#" class="btn btn-secondary">Download Code</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="theme-card">
+                        <div class="theme-preview">
+                            BusinessPro Theme Preview
+                        </div>
+                        <div class="theme-content">
+                            <h4>BusinessPro (Coming Soon)</h4>
+                            <p>Modern business and corporate WordPress theme with professional layout and comprehensive features.</p>
+                            <ul class="theme-features">
+                                <li>Corporate Design</li>
+                                <li>Service Showcase</li>
+                                <li>Team Member Profiles</li>
+                                <li>Contact Forms</li>
+                                <li>Portfolio Gallery</li>
+                                <li>Multi-language Support</li>
+                            </ul>
+                            <div class="theme-links">
+                                <a href="#" class="btn btn-primary" style="background: #95a5a6;">Coming Soon</a>
+                                <a href="#" class="btn btn-secondary" style="border-color: #95a5a6; color: #95a5a6;">Pre-register</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="about-section">
+                    <h3>About Me</h3>
+                    <p>I'm a passionate WordPress theme developer with expertise in creating clean, efficient, and user-friendly themes. I specialize in real estate and business themes that help businesses establish a strong online presence.</p>
+                    <p>With a focus on modern web standards, responsive design, and optimal performance, I create themes that not only look great but also provide excellent user experiences across all devices.</p>
+                    <div class="skills">
+                        <span class="skill-tag">WordPress Development</span>
+                        <span class="skill-tag">PHP</span>
+                        <span class="skill-tag">HTML5/CSS3</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Responsive Design</span>
+                        <span class="skill-tag">SEO Optimization</span>
+                        <span class="skill-tag">ThemeForest Standards</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="contact-section">
+                    <h3>Get In Touch</h3>
+                    <p>Ready to discuss your next project or have questions about my themes? I'd love to hear from you!</p>
+                    <div class="contact-links">
+                        <a href="/cdn-cgi/l/email-protection#2a53455f58044f474b43466a4f524b475a464f04494547" class="contact-link">Email Me</a>
+                        <a href="https://github.com/yourusername" class="contact-link">GitHub</a>
+                        <a href="https://linkedin.com/in/yourprofile" class="contact-link">LinkedIn</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 MiniMax Agent. All rights reserved. | WordPress Theme Development</p>
+        </div>
+    </footer>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
